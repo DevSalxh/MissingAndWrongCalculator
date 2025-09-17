@@ -233,37 +233,46 @@
         });
 
         // Add input event listener for real-time calculation
-        document.getElementById('numberInput').addEventListener('input', function() {
-            const inputValue = this.value.trim();
-            
-            if (inputValue === '') {
-                document.getElementById('result').style.display = 'none';
-                return;
-            }
-            
-            // Remove commas and parse the number
-            const cleanValue = inputValue.replace(/,/g, '');
-            const number = parseFloat(cleanValue);
-            
-            if (isNaN(number)) {
-                document.getElementById('result').style.display = 'none';
-                return;
-            }
-            
-            // Calculate result
-            const result = number * currentMultiplier;
-            
-            // Format result with commas
-            const formattedResult = result.toLocaleString('en-US', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2
-            });
-            
-            // Show result
-            document.getElementById('resultLabel').textContent = `${currentType} Result (${Math.round(currentMultiplier * 100)}%):`;
-            document.getElementById('resultValue').textContent = formattedResult;
-            document.getElementById('result').style.display = 'block';
-        });
+document.getElementById('numberInput').addEventListener('input', function() {
+    const inputValue = this.value.trim();
+    
+    if (inputValue === '') {
+        document.getElementById('result').style.display = 'none';
+        return;
+    }
+    
+    // Remove commas and parse the number
+    const cleanValue = inputValue.replace(/,/g, '');
+    const number = parseFloat(cleanValue);
+    
+    if (isNaN(number)) {
+        document.getElementById('result').style.display = 'none';
+        return;
+    }
+    
+    // Calculate result
+    let result = number * currentMultiplier;
+
+    // Apply caps
+    if (currentType.toLowerCase() === 'drink' && result > 20) {
+        result = 20;
+    }
+    if (currentType.toLowerCase() === 'cultery' && result > 5) {
+        result = 5;
+    }
+    
+    // Format result with commas
+    const formattedResult = result.toLocaleString('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    });
+    
+    // Show result
+    document.getElementById('resultLabel').textContent = `${currentType} Result (${Math.round(currentMultiplier * 100)}%):`;
+    document.getElementById('resultValue').textContent = formattedResult;
+    document.getElementById('result').style.display = 'block';
+});
+
 
         // Format input with commas as user types
         document.getElementById('numberInput').addEventListener('input', function() {
@@ -298,3 +307,4 @@
 </body>
 
 </html>
+
